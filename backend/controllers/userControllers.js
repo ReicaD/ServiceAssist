@@ -1,23 +1,54 @@
-const asyncHandler = require("express-async-handler")
+const asyncHandler = require("express-async-handler");
+const bcrypt = require("bcryptjs");
 
+const User = require("../model/userModel");
 //registering the new user
 //@ route api/users
 //@#access Public
-const registerUser = asyncHandler (async(req, res) => {
-     const {name,email,password} = req.body
+const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
 
-    //  validation
-    if(!name || !email || !password)  {
-   return res.status(400).json({message: "missing fields"})
-}
+  //  validation
+  if (!name || !email || !password) {
+     res.status(400)
+     throw new Error(" add the missing fields")
+  }
+  //find if user exist
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    res.status(400);
+    throw new Error("user Exist");
+  }
 
-  res.send("Register Route");
+  //hasing the password
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  //create user
+  const user = await user.create({
+    name,
+    email,
+    password: hashedPassword,
+  });
+
+  if (user) {
+    res.status(200).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    });
+  } else {
+    res.status(400);
+    throw new error("invalid user data")
+  }
+
+  // res.send("Register Route");
 });
 
 // login a user
 //@route api/users/login
 // @access public
-const loginUser = asyncHandler (async(req, res) => {
+const loginUser = asyncHandler(async (req, res) => {
   res.send("Login Route");
 });
 module.exports = {
