@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 
 const User = require("../model/userModel");
+
 //registering the new user
 //@ route api/users
 //@#access Public
@@ -10,8 +11,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
   //  validation
   if (!name || !email || !password) {
-     res.status(400)
-     throw new Error(" add the missing fields")
+    res.status(400);
+    throw new Error(" add the missing fields");
   }
   //find if user exist
   const userExists = await User.findOne({ email });
@@ -20,12 +21,12 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("user Exist");
   }
 
-  //hasing the password
+  //hashing the password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
   //create user
-  const user = await user.create({
+  const user = await User.create({
     name,
     email,
     password: hashedPassword,
@@ -39,7 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new error("invalid user data")
+    throw new error("invalid user data");
   }
 
   // res.send("Register Route");
@@ -49,7 +50,21 @@ const registerUser = asyncHandler(async (req, res) => {
 //@route api/users/login
 // @access public
 const loginUser = asyncHandler(async (req, res) => {
-  res.send("Login Route");
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  //compare method to check user and password match
+  if (user && (await bcrypt.compare(password, user.password))) {
+    res.status(200).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    });
+  } else {
+    res.status(401);
+    throw new Error("invalid credentials");
+  }
 });
 module.exports = {
   registerUser,
