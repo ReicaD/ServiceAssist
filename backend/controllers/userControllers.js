@@ -74,7 +74,12 @@ const loginUser = asyncHandler(async (req, res) => {
 //@ route api/me
 //@#access private
 const getMe = asyncHandler(async (req, res) => {
-  res.send("me");
+  const user = {
+    id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+  };
+  res.status(200).json(user);
 });
 
 //generating the  token
