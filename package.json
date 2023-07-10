@@ -5,18 +5,20 @@
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "server": "nodemon backend/server.js"
+    "server": "nodemon backend/server.js",
+    "client":"npm start --prefix serviceassist",
+    "dev":"concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ReicaD/ServiceAssist.git"
+    "url": "git+https://github.com/ReicaD/serviceassist.git"
   },
   "author": "Diane Bamanya",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ReicaD/ServiceAssist/issues"
+    "url": "https://github.com/ReicaD/serviceassist/issues"
   },
-  "homepage": "https://github.com/ReicaD/ServiceAssist#readme",
+  "homepage": "https://github.com/ReicaD/serviceassist#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
