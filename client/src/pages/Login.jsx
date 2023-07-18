@@ -25,7 +25,7 @@ function Login() {
             <FaSignInAlt />
              Login
           </h1>
-          <p>login Here</p>
+          <p>login Here to get support</p>
         </section>
         <section className="form">
         <form > 
