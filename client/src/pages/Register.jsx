@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { register } from "../features/auth/authSlice";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -11,8 +14,16 @@ function Register() {
   });
   const { name, email, password, password2 } = formData;
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, isLoading, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
   const onChange = (e) => {
-    setFormData(() => ({
+    setFormData((prevState) => ({
+      ...prevState,
       //targeting the name & value that will be submitted
       [e.target.name]: e.target.value,
     }));
@@ -20,9 +31,23 @@ function Register() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (password !== password2) {
-      toast.error("Passwords do not match");
-    }
+    // if (password !== password2) {
+    //   toast.error("Passwords do not match");
+    // } else {
+    const userData = {
+      name,
+      email,
+      password,
+    };
+    console.log("user", userData);
+    dispatch(register(userData))
+      .unwrap()
+      .then((user) => {
+        toast.success(`Registered new user - ${user.name}`);
+        navigate("/");
+      })
+      .catch(toast.error);
+    // }
   };
 
   return (
@@ -30,7 +55,7 @@ function Register() {
       <section className="heading">
         <h1>
           <FaUser />
-          Register
+          Register {user}
         </h1>
         <p>Create your Account Here</p>
       </section>
