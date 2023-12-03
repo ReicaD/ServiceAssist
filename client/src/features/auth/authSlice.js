@@ -2,12 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   user: null,
-  error: false,
+  isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
 };
-//typically used to async requests
+//register user
 export const register = createAsyncThunk(
   "auth/register",
   async (user, thunkAPI) => {
@@ -15,6 +15,13 @@ export const register = createAsyncThunk(
   }
 );
 
+export const login = createAsyncThunk(
+  "auth/login",
+  async (user, thunkAPI) => {
+    console.log(user);
+  }
+);
+//builders is to allow
 export const authSlice = createSlice({
   name: "auth",
   initialState,

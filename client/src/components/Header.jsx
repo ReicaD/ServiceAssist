@@ -6,7 +6,11 @@ function Header() {
   return (
     <header>
       <div className="logo">
-        <Link to="/">Support Desk</Link>
+        <strong>
+          <h2>
+            <Link to="/">Support Desk</Link>
+          </h2>
+        </strong>
       </div>
       <ul>
         <li>
@@ -16,7 +20,7 @@ function Header() {
         </li>
         <li>
           <Link to="/register">
-            <FaUser /> Login
+            <FaUser /> Register
           </Link>
         </li>
       </ul>
