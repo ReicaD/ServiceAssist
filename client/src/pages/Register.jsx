@@ -47,6 +47,8 @@ function Register() {
         navigate("/");
       })
       .catch(toast.error);
+      console.log("error");
+      toast.error("cannot register new user")
     // }
   };
 

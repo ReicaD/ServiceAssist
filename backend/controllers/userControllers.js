@@ -20,6 +20,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (userExists) {
     res.status(400);
     throw new Error("user Exist");
+
   }
 
   //hashing the password
@@ -33,6 +34,7 @@ const registerUser = asyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
+  console.log('User created ===>', user)
   if (user) {
     res.status(200).json({
       id: user._id,
@@ -55,7 +57,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-
+  console.log('user logged in', user)
   //compare method to check user and password match
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(200).json({
@@ -66,6 +68,7 @@ const loginUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(401);
+    console.log('something went wrong')
     throw new Error("invalid credentials");
   }
 });
